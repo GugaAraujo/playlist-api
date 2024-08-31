@@ -1,0 +1,15 @@
+node_modules
+
+*.log
+
+npm-debug.log
+
+.env
+.env.local
+
+.DS_Store
+Thumbs.db
+
+coverage
+*.md
+*.git
