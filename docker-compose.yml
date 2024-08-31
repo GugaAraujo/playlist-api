@@ -6,6 +6,7 @@ services:
       - '4000:4000'
     depends_on:
       - auth-service
+      - playlist-service
       - mongodb
       - rabbitmq
     env_file:
@@ -15,6 +16,15 @@ services:
     build: ./auth-service
     ports:
       - '3002:3002'
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+
+  playlist-service:
+    build: ./playlist-service
+    ports:
+      - "3000:3000"
     depends_on:
       - mongodb
     env_file:
