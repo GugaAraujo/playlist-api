@@ -1,0 +1,55 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Dependency directories
+node_modules/
+jspm_packages/
+bower_components/
+
+# Build directories
+dist/
+build/
+coverage/
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE/Editor specific files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Docker
+docker-compose.override.yml
+.docker/
+
+# Optional npm cache directory
+.npm/
+
+# Ignore test outputs
+junit.xml
+test-results/
+
+# Ignore database files
+*.db
+*.sqlite
+
+# Ignore any .bak files
+*.bak
