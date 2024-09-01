@@ -19,7 +19,7 @@ const createProxy = (serviceUrl) =>
 router.use(
   "/playlists",
   authMiddleware,
-  createProxy("http://playlist-service:3000")
+  createProxy("http://playlist-service:3003")
 );
 router.use(
   "/analysis",

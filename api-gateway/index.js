@@ -1,3 +1,4 @@
+const { metricsMiddleware, metricsEndpoint } = require("./src/metrics/metrics");
 const express = require("express");
 const routes = require("./src/routes");
 const dotenv = require("dotenv");
@@ -26,6 +27,8 @@ app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(metricsMiddleware);
+app.get("/metrics", metricsEndpoint);
 app.use("/api", routes);
 
 const PORT = process.env.PORT || 4000;

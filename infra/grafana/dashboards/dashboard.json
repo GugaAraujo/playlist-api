@@ -1,0 +1,50 @@
+{
+  "id": null,
+  "uid": "api-dashboard",
+  "title": "Microservices Dashboard",
+  "tags": [],
+  "timezone": "browser",
+  "schemaVersion": 27,
+  "version": 1,
+  "panels": [
+    {
+      "type": "graph",
+      "title": "HTTP Request Duration",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "http_request_duration_ms_bucket{job=\"api-gateway\"}",
+          "legendFormat": "API Gateway",
+          "refId": "A"
+        },
+        {
+          "expr": "http_request_duration_ms_bucket{job=\"analysis-service\"}",
+          "legendFormat": "Analysis Service",
+          "refId": "B"
+        },
+        {
+          "expr": "http_request_duration_ms_bucket{job=\"playlist-service\"}",
+          "legendFormat": "Playlist Service",
+          "refId": "C"
+        },
+        {
+          "expr": "http_request_duration_ms_bucket{job=\"auth-service\"}",
+          "legendFormat": "Auth Service",
+          "refId": "D"
+        }
+      ],
+      "xaxis": {
+        "mode": "time"
+      },
+      "yaxis": {
+        "format": "short"
+      },
+      "lines": true,
+      "fill": 1,
+      "linewidth": 2,
+      "legend": {
+        "show": true
+      }
+    }
+  ]
+}
