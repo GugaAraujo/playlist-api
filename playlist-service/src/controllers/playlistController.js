@@ -1,5 +1,6 @@
 const Playlist = require("../models/playlist");
 const rabbitmqService = require("../services/rabbitmqService");
+const logger = require("../config/logger");
 
 exports.createPlaylist = async (req, res) => {
   try {
@@ -9,17 +10,15 @@ exports.createPlaylist = async (req, res) => {
     const newPlaylist = new Playlist({ name, tracks, userId: user.id });
     await newPlaylist.save();
 
+    const { _id: id, userId, createdAt } = newPlaylist;
+    const data = { id, name, tracks, userId, createdAt };
+
     const eventMessage = JSON.stringify({
       event: "PlaylistCreated",
-      data: {
-        id: newPlaylist._id,
-        name: newPlaylist.name,
-        tracks: newPlaylist.tracks,
-        userId: newPlaylist.userId,
-        createdAt: newPlaylist.createdAt,
-      },
+      data,
     });
 
+    logger.info(`Playlist created: ${JSON.stringify(data)}`);
     rabbitmqService.publishToQueue("playlist_events", eventMessage);
 
     res.status(201).json(newPlaylist);
