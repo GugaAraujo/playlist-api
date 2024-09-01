@@ -1,5 +1,6 @@
 const amqp = require("amqplib");
 const Analysis = require("../models/analysis");
+const logger = require("../config/logger");
 
 const MAX_RETRY_ATTEMPTS = 5;
 const RETRY_DELAY_MS = 10000;
@@ -58,6 +59,7 @@ async function listenForEvents() {
             }
 
             await stats.save();
+            logger.info(`Count updated: ${JSON.stringify(stats)}`);
           }
 
           channel.ack(msg);
