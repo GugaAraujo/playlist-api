@@ -71,6 +71,12 @@ In the `infra` folder, execute:
 
 This will start all necessary services (RabbitMQ, MongoDB, Redis, Grafana, Prometheus) and the microservices.
 
+## Endpoints Documentation
+You can easily explore and test the application's endpoints by visiting our Swagger list.
+[http://localhost:4000/api/docs](http://localhost:4000/api/docs).
+
+For a more convenient testing experience, you can import our [Postman Colletion](./postman_collection_v2.1.0.json).
+
 ### Accessing Grafana:
 
 - **User:** admin
