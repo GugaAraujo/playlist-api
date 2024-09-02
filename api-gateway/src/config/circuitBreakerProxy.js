@@ -9,12 +9,11 @@ const addUserIdHeader = (headers, req) => {
   return headers;
 };
 
-
 const createCircuitBreaker = (serviceUrl) => {
   const options = {
-    timeout: 3000,
+    timeout: 10000,
     errorThresholdPercentage: 50,
-    resetTimeout: 30000,
+    resetTimeout: 20000,
   };
 
   const axiosInstance = axios.create({
@@ -53,7 +52,12 @@ const createCircuitBreaker = (serviceUrl) => {
       })
       .catch((error) => {
         logger.error(`Request failed: ${error.message}`);
-        res.status(502).send("Bad Gateway");
+
+        if (error.isAxiosError && error.response) {
+          res.status(error.response.status).send(error.response.data);
+        } else {
+          res.status(502).send("Bad Gateway");
+        }
       });
   };
 
