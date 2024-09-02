@@ -1,0 +1,11 @@
+{
+  "name": "playlist-api",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "npm run test:auth && npm run test:playlist && npm run test:analysis && npm run test:gateway",
+    "test:auth": "cd auth-service && npm test",
+    "test:playlist": "cd playlist-service && npm test",
+    "test:analysis": "cd analysis-service && npm test",
+    "test:gateway": "cd api-gateway && npm test"
+  }
+}

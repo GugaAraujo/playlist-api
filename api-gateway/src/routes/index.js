@@ -1,13 +1,19 @@
 const express = require("express");
-const proxy = require("express-http-proxy");
 const authMiddleware = require("../middleware/auth");
+const createBreakerProxy = require("./../config/circuitBreakerProxy");
 
 const router = express.Router();
 
-router.use("/playlists", authMiddleware, proxy("http://playlist-service:3000"));
-router.use("/analysis", authMiddleware, proxy("http://analysis-service:3001"));
+router.use("/playlists", authMiddleware, (req, res, next) =>
+  createBreakerProxy("http://playlist-service:3003")(req, res, next)
+);
 
-router.use("/auth", proxy("http://auth-service:3002"));
+router.use("/analysis", authMiddleware, (req, res, next) =>
+  createBreakerProxy("http://analysis-service:3001")(req, res, next)
+);
 
+router.use("/auth", (req, res, next) =>
+  createBreakerProxy("http://auth-service:3002")(req, res, next)
+);
 
 module.exports = router;

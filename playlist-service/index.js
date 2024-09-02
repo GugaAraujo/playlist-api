@@ -13,7 +13,7 @@ mongoose.connect(process.env.MONGODB_URI);
 
 app.use(metricsMiddleware);
 app.get("/metrics", metricsEndpoint);
-app.use("/", require("./src/routes/authRoutes"));
+app.use("/", require("./src/routes/playlistRoutes"));
 
-const PORT = process.env.PORT || 3002;
-app.listen(PORT, () => console.log(`Auth Service running on port ${PORT}`));
+const PORT = process.env.PORT || 3003;
+app.listen(PORT, () => console.log(`Playlist Service running on port ${PORT}`));

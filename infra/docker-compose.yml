@@ -1,0 +1,95 @@
+version: '3.8'
+services:
+  api-gateway:
+    build: ../api-gateway
+    ports:
+      - '4000:4000'
+    depends_on:
+      - auth-service
+      - playlist-service
+      - analysis-service
+      - mongodb
+      - rabbitmq
+    env_file:
+      - .env
+
+  auth-service:
+    build: ../auth-service
+    ports:
+      - '3002:3002'
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+
+  playlist-service:
+    build: ../playlist-service
+    ports:
+      - "3003:3003"
+    depends_on:
+      - mongodb
+      - rabbitmq
+    env_file:
+      - .env
+
+  analysis-service:
+    build: ../analysis-service
+    ports:
+      - "3001:3001"
+    depends_on:
+      - redis
+      - mongodb
+      - rabbitmq
+    env_file:
+      - .env
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb_data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:15672"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  prometheus:
+    image: prom/prometheus:v2.43.0
+    container_name: prometheus
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
+  redis:
+    image: redis:7.0
+    ports:
+      - '6379:6379'
+
+volumes:
+  mongodb_data:
+  rabbitmq_data:
