@@ -8,43 +8,386 @@
   "version": 1,
   "panels": [
     {
-      "type": "graph",
+      "type": "row",
       "title": "HTTP Request Duration",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "panels": []
+    },
+    {
+      "type": "graph",
+      "title": "API Gateway HTTP Request Duration",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 1
+      },
       "datasource": "Prometheus",
       "targets": [
         {
           "expr": "http_request_duration_ms_bucket{job=\"api-gateway\"}",
           "legendFormat": "API Gateway",
           "refId": "A"
-        },
-        {
-          "expr": "http_request_duration_ms_bucket{job=\"analysis-service\"}",
-          "legendFormat": "Analysis Service",
-          "refId": "B"
-        },
-        {
-          "expr": "http_request_duration_ms_bucket{job=\"playlist-service\"}",
-          "legendFormat": "Playlist Service",
-          "refId": "C"
-        },
-        {
-          "expr": "http_request_duration_ms_bucket{job=\"auth-service\"}",
-          "legendFormat": "Auth Service",
-          "refId": "D"
         }
       ],
-      "xaxis": {
-        "mode": "time"
-      },
-      "yaxis": {
-        "format": "short"
-      },
       "lines": true,
       "fill": 1,
       "linewidth": 2,
       "legend": {
         "show": true
       }
+    },
+    {
+      "type": "graph",
+      "title": "Auth Service HTTP Request Duration",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 1
+      },
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "http_request_duration_ms_bucket{job=\"auth-service\"}",
+          "legendFormat": "Auth Service",
+          "refId": "B"
+        }
+      ],
+      "lines": true,
+      "fill": 1,
+      "linewidth": 2,
+      "legend": {
+        "show": true
+      }
+    },
+    {
+      "type": "graph",
+      "title": "Playlist Service HTTP Request Duration",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 10
+      },
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "http_request_duration_ms_bucket{job=\"playlist-service\"}",
+          "legendFormat": "Playlist Service",
+          "refId": "C"
+        }
+      ],
+      "lines": true,
+      "fill": 1,
+      "linewidth": 2,
+      "legend": {
+        "show": true
+      }
+    },
+    {
+      "type": "graph",
+      "title": "Analysis Service HTTP Request Duration",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 10
+      },
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "http_request_duration_ms_bucket{job=\"analysis-service\"}",
+          "legendFormat": "Analysis Service",
+          "refId": "D"
+        }
+      ],
+      "lines": true,
+      "fill": 1,
+      "linewidth": 2,
+      "legend": {
+        "show": true
+      }
+    },
+    {
+      "type": "row",
+      "title": "Memory Usage",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 19
+      },
+      "panels": []
+    },
+    {
+      "type": "gauge",
+      "title": "API Gateway Memory Usage",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 20
+      },
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "nodejs_memory_usage_bytes{job=\"api-gateway\",type=\"heap_used\"}",
+          "legendFormat": "Heap Used",
+          "refId": "E"
+        },
+        {
+          "expr": "nodejs_memory_usage_bytes{job=\"api-gateway\",type=\"rss\"}",
+          "legendFormat": "RSS",
+          "refId": "F"
+        }
+      ],
+      "gauge": {
+        "min": 0,
+        "max": 1000000000,
+        "thresholds": "80,90",
+        "thresholdLabels": ["Warning", "Critical"]
+      }
+    },
+    {
+      "type": "gauge",
+      "title": "Auth Service Memory Usage",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 20
+      },
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "nodejs_memory_usage_bytes{job=\"auth-service\",type=\"heap_used\"}",
+          "legendFormat": "Heap Used",
+          "refId": "G"
+        },
+        {
+          "expr": "nodejs_memory_usage_bytes{job=\"auth-service\",type=\"rss\"}",
+          "legendFormat": "RSS",
+          "refId": "H"
+        }
+      ],
+      "gauge": {
+        "min": 0,
+        "max": 1000000000,
+        "thresholds": "80,90",
+        "thresholdLabels": ["Warning", "Critical"]
+      }
+    },
+    {
+      "type": "gauge",
+      "title": "Playlist Service Memory Usage",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 29
+      },
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "nodejs_memory_usage_bytes{job=\"playlist-service\",type=\"heap_used\"}",
+          "legendFormat": "Heap Used",
+          "refId": "I"
+        },
+        {
+          "expr": "nodejs_memory_usage_bytes{job=\"playlist-service\",type=\"rss\"}",
+          "legendFormat": "RSS",
+          "refId": "J"
+        }
+      ],
+      "gauge": {
+        "min": 0,
+        "max": 1000000000,
+        "thresholds": "80,90",
+        "thresholdLabels": ["Warning", "Critical"]
+      }
+    },
+    {
+      "type": "gauge",
+      "title": "Analysis Service Memory Usage",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 29
+      },
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "nodejs_memory_usage_bytes{job=\"analysis-service\",type=\"heap_used\"}",
+          "legendFormat": "Heap Used",
+          "refId": "K"
+        },
+        {
+          "expr": "nodejs_memory_usage_bytes{job=\"analysis-service\",type=\"rss\"}",
+          "legendFormat": "RSS",
+          "refId": "L"
+        }
+      ],
+      "gauge": {
+        "min": 0,
+        "max": 1000000000,
+        "thresholds": "80,90",
+        "thresholdLabels": ["Warning", "Critical"]
+      }
+    },
+    {
+      "type": "row",
+      "title": "CPU Usage",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 38
+      },
+      "panels": []
+    },
+    {
+      "type": "gauge",
+      "title": "API Gateway CPU Usage",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 39
+      },
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "rate(nodejs_cpu_usage_seconds_total{job=\"api-gateway\",type=\"user\"}[1m])",
+          "legendFormat": "User CPU Time",
+          "refId": "M"
+        },
+        {
+          "expr": "rate(nodejs_cpu_usage_seconds_total{job=\"api-gateway\",type=\"system\"}[1m])",
+          "legendFormat": "System CPU Time",
+          "refId": "N"
+        }
+      ],
+      "gauge": {
+        "min": 0,
+        "max": 100,
+        "thresholds": "80,90",
+        "thresholdLabels": ["Warning", "Critical"]
+      }
+    },
+    {
+      "type": "gauge",
+      "title": "Auth Service CPU Usage",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 39
+      },
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "rate(nodejs_cpu_usage_seconds_total{job=\"auth-service\",type=\"user\"}[1m])",
+          "legendFormat": "User CPU Time",
+          "refId": "O"
+        },
+        {
+          "expr": "rate(nodejs_cpu_usage_seconds_total{job=\"auth-service\",type=\"system\"}[1m])",
+          "legendFormat": "System CPU Time",
+          "refId": "P"
+        }
+      ],
+      "gauge": {
+        "min": 0,
+        "max": 100,
+        "thresholds": "80,90",
+        "thresholdLabels": ["Warning", "Critical"]
+      }
+    },
+    {
+      "type": "gauge",
+      "title": "Playlist Service CPU Usage",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 48
+      },
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "rate(nodejs_cpu_usage_seconds_total{job=\"playlist-service\",type=\"user\"}[1m])",
+          "legendFormat": "User CPU Time",
+          "refId": "Q"
+        },
+        {
+          "expr": "rate(nodejs_cpu_usage_seconds_total{job=\"playlist-service\",type=\"system\"}[1m])",
+          "legendFormat": "System CPU Time",
+          "refId": "R"
+        }
+      ],
+      "gauge": {
+        "min": 0,
+        "max": 100,
+        "thresholds": "80,90",
+        "thresholdLabels": ["Warning", "Critical"]
+      }
+    },
+    {
+      "type": "gauge",
+      "title": "Analysis Service CPU Usage",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 48
+      },
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "rate(nodejs_cpu_usage_seconds_total{job=\"analysis-service\",type=\"user\"}[1m])",
+          "legendFormat": "User CPU Time",
+          "refId": "S"
+        },
+        {
+          "expr": "rate(nodejs_cpu_usage_seconds_total{job=\"analysis-service\",type=\"system\"}[1m])",
+          "legendFormat": "System CPU Time",
+          "refId": "T"
+        }
+      ],
+      "gauge": {
+        "min": 0,
+        "max": 100,
+        "thresholds": "80,90",
+        "thresholdLabels": ["Warning", "Critical"]
+      }
     }
-  ]
+  ],
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
+  },
+  "templating": {
+    "list": []
+  },
+  "annotations": {
+    "list": []
+  }
 }
