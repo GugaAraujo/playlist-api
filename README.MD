@@ -1,90 +1,117 @@
-### Projeto de Microserviços para Plataforma de Streaming de Música
+# Microservices Project for Music Streaming Platform
 
-## Visão Geral
-Este projeto é um sistema de microserviços desenvolvido para uma plataforma de streaming de música. O foco está na integração entre serviços e no processamento assíncrono de eventos. A arquitetura foi inspirada no Moleculer.js, especialmente na estrutura do gateway.
+## Overview
+This project is a microservices system for a music streaming platform, focusing on service integration and asynchronous event processing. Inspired by Moleculer.js, it uses context management to pass logged-in user data in headers, similar to how Moleculer handles context. The system employs an event-based architecture for better scalability and flexibility.
 
-## Arquitetura do Sistema
-### Microserviços
-API Gateway
+## System Architecture
+### Microservices
 
-Redireciona as requisições para os microserviços apropriados.
-Implementa autenticação via middleware que analisa o token JWT.
-Utiliza Circuit Breaker (opossum) para garantir resiliência nas chamadas entre serviços.
-Playlist Service
+**API Gateway**
 
-Gerencia playlists de usuários através de uma API RESTful.
-Publica eventos de criação/atualização de playlists no RabbitMQ.
-Utiliza MongoDB para armazenamento.
-Analysis Service
+- Redirects requests to appropriate microservices.
+- Implements authentication via middleware that analyzes the JWT token.
+- Uses Circuit Breaker (opossum) to ensure resilience in service calls.
 
-Processa eventos de playlist recebidos do RabbitMQ.
-Atualiza estatísticas de usuários (como contagem de playlists).
-Utiliza Redis para caching curto de consultas de análise.
-Auth Service
+**Playlist Service**
 
-Gerencia a autenticação dos usuários.
-Gera e valida tokens JWT.
+- Manages user playlists through a RESTful API.
+- Publishes playlist creation event to RabbitMQ.
+- Uses MongoDB for storage.
 
-### Integração
-RabbitMQ: Usado para comunicação assíncrona entre os serviços. Eventos de playlist são publicados pelo playlist-service e consumidos pelo analysis-service.
-Redis: Implementado no analysis-service para caching de curto prazo, evitando consultas repetidas desnecessárias.
-Docker: Os microserviços, RabbitMQ, e ferramentas de monitoramento são containerizados utilizando Docker e gerenciados pelo Docker Compose.
+**Analysis Service**
 
-### Monitoramento e Logging
-Winston: Utilizado para gerar logs em diversos pontos do sistema, como na criação de playlists e no processamento de eventos.
-Grafana e Prometheus: Configurados para monitorar métricas dos microserviços. Pré-configurações de dashboards e datasources estão disponíveis na pasta infra.
+- Processes playlist events received from RabbitMQ.
+- Updates the count of playlists created by each user.
+- Uses Redis for short-term analytics caching, just to avoid unnecessary queries.
 
-## Requisitos do Sistema
-### Tecnologias
-Node.js, Express, MongoDB, RabbitMQ, Redis, Docker, Jest, Winston, Grafana, Prometheus, opossum (Circuit Breaker).
+**Auth Service**
 
-### Pré-requisitos
-Docker e Docker Compose instalados.
-Configuração de variáveis de ambiente na pasta infra com base no arquivo .env-sample.
+- Manages user authentication.
+- Generates and validates JWT tokens.
 
-## Instruções de Instalação
-Clone o repositório:
+### Integration
 
-```git clone https://github.com/GugaAraujo/playlist-api.git
+- **RabbitMQ:** Used for asynchronous communication between services. Playlist events are published by the playlist-service and consumed by the analysis-service.
+- **Redis:** Implemented in the analysis-service for short-term caching, avoiding unnecessary repeated queries.
+- **Docker:** Microservices, RabbitMQ, and monitoring tools are containerized using Docker and managed by Docker Compose.
 
-cd playlist-api
-```
+### Monitoring and Logging
 
-### Configuração de Variáveis de Ambiente:
+- **Winston:** Used for logging at various points in the system, including proxy and circuit breaker events, as well as when adding a new playlist and updating the playlist creation count.
 
-Copie o arquivo .env-sample para .env e preencha as variáveis de ambiente conforme necessário.
-Rodando o Docker Compose:
+- **Grafana and Prometheus:** Configured to monitor microservices metrics. Pre-configured dashboards and datasources are available in the `infra` folder.
 
-Na pasta infra, execute:
+## System Requirements
+### Technologies
+
+- Node.js, Express, MongoDB, RabbitMQ, Redis, Docker, Jest, Winston, Grafana, Prometheus, opossum (Circuit Breaker).
+
+### Prerequisites
+
+- Docker and Docker Compose installed.
+- Environment variables configured in the `infra` folder based on the `.env-sample` file.
+
+## Installation Instructions
+
+**Clone the Repository:**
+
+```git clone https://github.com/GugaAraujo/playlist-api.git```
+
+```cd playlist-api```
+
+### Environment Variable Configuration:
+
+- In the `infra` folder, copy the `.env-sample` file to `.env` and fill in the required environment variables.
+
+**Running Docker Compose:**
+
+In the `infra` folder, execute:
 
 ```docker-compose up --build```
 
-Isso irá subir todos os serviços necessários (RabbitMQ, MongoDB, Redis, Grafana, Prometheus) e os microserviços.
+This will start all necessary services (RabbitMQ, MongoDB, Redis, Grafana, Prometheus) and the microservices.
 
-### Acessando o Grafana:
+### Accessing Grafana:
 
-Usuário: admin
-Senha: admin (altere no primeiro acesso)
+- **User:** admin
+- **Password:** admin (should be changed on the first login)
+- **URL:** [http://localhost:3000/](http://localhost:3000/)
 
-O dashboard do Grafana pode ser acessado através do http://localhost:3000.
+### Accessing Prometheus:
 
-### Rodando os Testes:
+- **URL:** [http://localhost:9090/](http://localhost:9090/)
 
-Para rodar todos os testes de todos os serviços, execute na pasta raiz do projeto:
+### Running Tests:
+
+To run all tests for all services, execute in the root folder of the project:
 
 ```npm test```
-Para rodar testes de um serviço específico, navegue até a pasta do serviço e execute:
 
-```npm test```
+To run tests for a specific service, navigate to the service's folder and execute the same command.
 
-## Desafios Enfrentados
-Integração entre Serviços: Garantir que a comunicação entre os microserviços fosse robusta e escalável foi um desafio significativo, especialmente no tratamento de falhas com RabbitMQ.
-Resiliência: Implementar um Circuit Breaker eficaz para garantir que falhas temporárias entre serviços não causassem uma falha total do sistema.
+## Challenges
 
-## Melhorias Futuras
-Expansão das Análises: Implementar análises mais complexas no analysis-service.
-Escalabilidade: Melhorar a escalabilidade do sistema com mais otimizações e distribuição de carga.
-Segurança: Adicionar mais camadas de segurança, como encriptação de dados sensíveis e implementação de OAuth.
+- **Service Integration:** Ensuring that communication between microservices is robust and scalable was a significant challenge, especially in handling failures with RabbitMQ.
+- **Resilience:** Implementing an effective Circuit Breaker alongside a proxy that redirects to other routes and sends the logged-in user data in the request header proved to be complex. Coordinating these components to ensure they work together seamlessly was a significant challenge.
+- **Log Management:** Handling and managing logs across the API was challenging. Ensuring that logs are captured consistently and are easy to analyze required careful planning and implementation.
+- **Metrics Implementation:** Implementing effective metrics to monitor the system’s performance and health was crucial. It was necessary to define and track key performance indicators to ensure the system's reliability and efficiency.
 
-## Conclusão
-Este projeto demonstra a arquitetura de um sistema de microserviços robusto e escalável, utilizando as melhores práticas de desenvolvimento backend. A integração assíncrona via RabbitMQ, juntamente com a resiliência proporcionada pelo Circuit Breaker e caching com Redis, mostra a capacidade do sistema em lidar com cargas de trabalho reais.
+## Future Improvements
+
+- Implement TypeScript;
+- Implement logging throughout the application;
+- Centralize and simplify log display;
+- Expand Redis caching for all Get requests;
+- Implement more metrics;
+- Implement Swagger;
+- Study module scaling and/or load balancer implementation;
+- Implement alerts;
+- Implement user update and deletion;
+- Implement logout;
+- Implement adding songs as an object instead of a string;
+- Analyze most played genres, overall and by users.
+
+## Conclusion
+
+This project demonstrates the architecture of a robust and scalable microservices system, utilizing best practices in backend development. The asynchronous integration via RabbitMQ, combined with resilience provided by the Circuit Breaker, caching with Redis, and comprehensive monitoring with Grafana and Prometheus, showcases the system's ability to handle real-world workloads.
+
