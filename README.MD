@@ -77,6 +77,19 @@ You can easily explore and test the application's endpoints by visiting our Swag
 
 For a more convenient testing experience, you can import our [Postman Colletion](./postman_collection_v2.1.0.json).
 
+## RabbitMQ
+
+**Management Interface:** [http://localhost:15672](http://localhost:15672)  
+**Username:** guest  
+**Password:** guest
+
+### Queues:
+
+- **dlq:** Dead Letter Queue for messages that fail multiple times.
+- **playlist_events:** Queue for events related to created playlists.
+- **retry_queue:** Queue for retrying messages in case of failures.
+
+
 ### Accessing Grafana:
 
 - **User:** admin
