@@ -81,6 +81,9 @@ This will start all necessary services (RabbitMQ, MongoDB, Redis, Grafana, Prome
 
 - **URL:** [http://localhost:9090/](http://localhost:9090/)
 
+### Postman Collection:
+You can import our [Postman Colletion](./postman_collection_v2.1.0.json) to easilly test the application.
+
 ### Running Tests:
 
 To run all tests for all services, execute in the root folder of the project:
